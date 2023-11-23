@@ -4,8 +4,10 @@ cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 
 from flask import Flask, render_template,request
-
 from datetime import datetime
+
+import requests
+from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
@@ -22,6 +24,7 @@ def index():
     X +="<a href=/wave>人選之人演員名單(按年齡由小排到大)</a><br><br>"
     X +="<a href=/books>全部圖書</a><br><br>"
     X +="<a href=/search>根據書名關鍵字查詢圖書</a><br><br>"
+    X +="<a href=/spider>網路爬蟲擷取子青老師課程資料</a><br><br>"
     return X
 
 @app.route("/mis")
@@ -95,6 +98,24 @@ def search():
         return Result
     else:
         return render_template("search.html")
+
+@app.route("/spider")
+def spider():
+    info = ""
+
+    url = "https://www1.pu.edu.tw/~tcyang/course.html"
+    Data = requests.get(url)
+    Data.encoding = "utf-8"
+    #print(Data.text)
+    sp = BeautifulSoup(Data.text, "html.parser")
+    result=sp.select(".team-box")
+
+    for x in result:
+        info += "<a href=" + x.find("a").get("href") + ">" + x.find("h4").text +"<br>"
+        info += x.find("p").text +"<br>"
+        info += x.find("a").get("href") +"<br>"
+        info +="<img src=https://www1.pu.edu.tw/~tcyang/" +x.find("img").get("src") + "></img><br><br>"
+        return info
 
 
 if __name__ == "__main__":
