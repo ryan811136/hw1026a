@@ -111,11 +111,11 @@ def spider():
     result=sp.select(".team-box")
 
     for x in result:
-        info += "<a href=" + x.find("a").get("href") + ">" + x.find("h4").text +"<br>"
+        info += "<a href=" + x.find("a").get("href") + ">" + x.find("h4").text +"</a><br>"
         info += x.find("p").text +"<br>"
         info += x.find("a").get("href") +"<br>"
-        info +="<img src=https://www1.pu.edu.tw/~tcyang/" +x.find("img").get("src") + "></img><br><br>"
-        return info
+        info +="<img src=https://www1.pu.edu.tw/~tcyang/" + x.find("img").get("src") + " width=200 height=300></img><br><br>"
+    return info
 
 
 if __name__ == "__main__":
