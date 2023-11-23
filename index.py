@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    X ="作者:資管二A 黃于倫 2023-11-16a<br>"
+    X ="作者:資管二A 黃于倫 2023-11-23a<br>"
     X +="<a href=/mis>資管導論</a><br>"
     X +="<a href=/today>日期時間</a><br>"
     X +="<a href=/account>帳號密碼</a><br>"
