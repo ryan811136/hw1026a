@@ -23,7 +23,6 @@ for item in result:
   showDate = show[0:10]
   showLength = show[13:]
   info += picture + "\n" + title + "\n" + hyperlink + "\n" + showDate + "\n" + showLength + "\n\n"
-
 print(info)
 doc = {
       "title": title,
@@ -33,7 +32,6 @@ doc = {
       "showLength": showLength,
       "lastUpdate": lastUpdate
   }
-
 db = firestore.client()
 doc_ref = db.collection("電影").document(movie_id)
 doc_ref.set(doc)
