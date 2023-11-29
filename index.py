@@ -155,7 +155,7 @@ def movie():
 
     db = firestore.client()
     doc_ref = db.collection("電影").document(movie_id)
-    doc_ref.set(doc)  
+    doc_ref.set(doc)    
       
 @app.route("/input", methods=["POST","GET"])
 def input():
