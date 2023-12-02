@@ -14,3 +14,8 @@ for x in result:
 	print(x.find("a").get("href"))
 	print("https://www1.pu.edu.tw/~tcyang/" +x.find("img").get("src"))
 	print()
+#print(result)
+#info = ""
+#for item in result:
+	#info += item.text + "\n\n"
+#print(info)

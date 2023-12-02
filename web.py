@@ -11,7 +11,6 @@ def index():
     x +="<a href=/account>帳號密碼</a><br>"
     x +="<a href=/about>于倫網頁</a><br>"
     x +="<a href=/welcome?guest=于倫>歡迎于倫</a><br>"
-    x +="<a href=/account>使用表單方式傳值</a><br>"
     return x
 
 @app.route("/mis")

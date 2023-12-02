@@ -23,15 +23,12 @@ def index():
     X +="<a href=/account>帳號密碼</a><br>"
     X +="<a href=/about>于倫網頁</a><br>"
     X +="<a href=/welcome?guest=于倫>歡迎于倫</a><br>"
-    X +="<a href=/account>使用表單方式傳值</a><br><br>"
     X +="<a href=/wave>人選之人演員名單(按年齡由小排到大)</a><br><br>"
     X +="<a href=/books>全部圖書</a><br><br>"
     X +="<a href=/search>根據書名關鍵字查詢圖書</a><br><br>"
     X +="<a href=/spider>網路爬蟲擷取子青老師課程資料</a><br><br>"
-    X +="<br><a href=/movie>讀取開眼電影即將上映影片，寫入Firestore</a><br>"
-    X +="<br><a href=/input>查詢開眼電影即將上映影片</a><br>"
-
-
+    X +="<a href=/movie>讀取開眼電影即將上映影片，寫入Firestore</a><br>"
+    X +="<a href=/searchQ>查詢開眼電影即將上映影片</a><br>"
     return X
 
 @app.route("/mis")
@@ -73,16 +70,17 @@ def wave():
     return Result
 
 @app.route("/books")
-def books():
+def book():
     Result = ""
     db = firestore.client()
-    collection_ref = db.collection("圖書精選")    
-    docs = collection_ref.order_by("anniversary").get()    
+    collection_ref = db.collection("根據片名查詢關鍵字即將上映影片")
+
+    docs = collection_ref.order_by("anniversary").get()
     for doc in docs:
-        bk = doc.to_dict()         
-        Result += "書名 : <a href=" + bk["url"] + ">" + bk["title"] + "</a><br>"
-        Result += "作者 : " + bk["author"] + "<br>"
-        Result += str(bk["anniversary"]) + "周年紀念版" + "<br><br>"
+        bk = doc.to_dict()
+        Result += "片名：<a href=" + bk["url"] + ">" + bk["title"] + "</a><br>"
+        Result += "作者：" + bk["author"] + "<br>"
+        Result += str(bk["anniversary"]) + "週年紀念版" + "<br><br>"
         Result += "<img src=" + bk["cover"] + "></img><br><br>"
     return Result
 
@@ -156,9 +154,11 @@ def movie():
     db = firestore.client()
     doc_ref = db.collection("電影").document(movie_id)
     doc_ref.set(doc)    
-      
-@app.route("/input", methods=["POST","GET"])
-def input():
+  return "近期上映電影已爬蟲及存檔完畢，網站最近更新日期為：" + lastUpdate
+  
+    
+@app.route("/searchQ", methods=["POST","GET"])
+def searchQ():
     if request.method == "POST":
         MovieTitle = request.form["MovieTitle"]
         info = ""
@@ -168,7 +168,7 @@ def input():
         for doc in docs:
             if MovieTitle in doc.to_dict()["title"]: 
                 info += "片名：" + doc.to_dict()["title"] + "<br>" 
-                info += "影片介紹：<a href='" + doc.to_dict()["hyperlink"] + "'>" + doc.to_dict()["hyperlink"] + "</a><br>"
+                info += "影片介紹：<a href=" + doc.to_dict()["hyperlink"] + ">" + doc.to_dict()["hyperlink"] + "</a><br>"
                 info += "片長：" + doc.to_dict()["showLength"] + " 分鐘<br>" 
                 info += "上映日期：" + doc.to_dict()["showDate"] + "<br><br>"           
         return info
@@ -176,5 +176,7 @@ def input():
         return render_template("input.html")
 
 
+
+
 if __name__ == "__main__":
-   app.run(debug=True)
+    app.run(debug=True)
